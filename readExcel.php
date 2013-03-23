@@ -1,22 +1,19 @@
 <?php
 session_start();
-error_reporting(E_ALL);
+error_reporting (E_ALL ^ E_NOTICE);
 set_time_limit(0);
-
-//date_default_timezone_set('Europe/London');
 
 ?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<title>PHPExcel Reader Example #05</title>
+<title>Excel Data Conversion</title>
 
 </head>
 <body>
 
-<h1>PHPExcel Reader Example #05</h1>
-<h2>Simple File Reader using the "Read Data Only" Option</h2>
+<h1>Excel to mySQL Automation</h1>
 
 <?php
 /** Include path **/
@@ -46,13 +43,34 @@ $sheetData = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
 
 $numColumns=count($sheetData);
 
+if ($_GET["submit"]==1)
+{
+	$newdata=new array();
+	for ($i=0;$i<$numColumns;$i++)
+	{
+		if (isset($_POST['select$i'])
+		{
+			$asize=count($newdata);
+			//$newdata[$asize]=
+		}
+	}
+}
+
+
 //var_dump($sheetData);
-echo "<br>";
+//echo "<br>";
+echo "<button class='btn btn-primary' id='selectall'>Select All</button>";
+echo "&nbsp;&nbsp;";
+echo "<button class='btn btn-danger' id='deselectall'>Deselect All</button>";
+
+echo "<form method='post' action='readExcel.php?submit=1'>";
+
 echo "<table class='table'>";
 	echo "<center><tr>";
-	echo "<th>";
-			echo "ID";
+		echo "<th>";
+			echo "Select To Add";
 		echo "</th>";
+		
 		echo "<th>";
 			echo "Name";
 		echo "</th>";
@@ -75,7 +93,7 @@ echo "<table class='table'>";
 			echo "Installments";
 		echo "</th>";
 		echo "<th>";
-			echo "Total $";
+			echo "Total";
 		echo "</th>";
 		echo "<th>";
 			echo "Program";
@@ -83,19 +101,17 @@ echo "<table class='table'>";
 		echo "<th>";
 			echo "Title";
 		echo "</th>";
-		echo "<th>";
-			echo "Select To Add";
-		echo "</th>";
+		
 	echo "</tr></center>";
 for ($i=1;$i<=$numColumns;$i++)
 {
 	echo "<tr>";
 		echo "<td>";
-			echo $i;
+			echo "<input type='checkbox' id='select$i'>";
 		echo "</td>";
 		echo "<td>";
 			$ab=$sheetData[$i]["A"];
-			echo "<textarea >$ab</textarea>";
+			echo "<textarea>$ab</textarea>";
 		echo "</td>";
 		echo "<td>";
 			$ab=$sheetData[$i]["B"];
@@ -133,52 +149,35 @@ for ($i=1;$i<=$numColumns;$i++)
 			$ab=$sheetData[$i]["J"];
 			echo "<textarea >$ab</textarea>";
 		echo "</td>";
-		echo "<td>";
-			echo "<input type='checkbox' id='select$i'>";
-		echo "</td>";
+		
 	echo "</tr>";
 }
-echo "<tr>";
-	echo "<td>";
-			//echo $i;
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			
-		echo "</td>";
-		echo "<td>";
-			echo "<button class='btn btn-primary' href='readExcel.php?del=1' id='submitData'>Submit</button>";
-		echo "</td>";
-	echo "</tr>";
 echo "</table>";
+echo "<input type='submit' class='btn btn-primary'>";
+//echo "<a class='btn btn-primary' href='readExcel.php?submit=1'>Submit</a>";
+echo "</form>";
+
 ?>
 <script src="http://code.jquery.com/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+	<script>
+		$("#selectall").click(function () 
+		{
+			var num=<?php echo $numColumns; ?>;
+			for (var i=0;i<num;i++)
+			{
+				$("#select"+i).attr('checked', true);
+			}
+		});
+		$("#deselectall").click(function () 
+		{
+			var num=<?php echo $numColumns; ?>;
+			for (var i=0;i<num;i++)
+			{
+				$("#select"+i).attr('checked', false);
+			}
+		});
+		
+	</script>
 <body>
 </html>
